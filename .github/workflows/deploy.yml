@@ -1,0 +1,31 @@
+name: Deploy React App to Azure VM
+
+on:
+  push:
+    branches:
+      - master  # Runs when code is pushed to master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: 4.213.180.166
+          username: azureuser
+          key: ${{ secrets.AZURE_VM_SSH_KEY }}
+          script: |
+            cd /home/azureuser/sites/reacting-application
+            git pull origin master
+            npm install
+            pm2 restart 0
