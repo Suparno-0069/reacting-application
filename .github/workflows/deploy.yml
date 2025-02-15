@@ -21,7 +21,7 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v0.1.6
         with:
-          host: 4.213.180.166
+          host: ${{ secrets.AZURE_VM_IP }}
           username: azureuser
           key: ${{ secrets.AZURE_VM_SSH_KEY }}
           script: |
